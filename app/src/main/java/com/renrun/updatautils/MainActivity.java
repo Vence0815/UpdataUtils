@@ -18,8 +18,8 @@ public class MainActivity extends FragmentActivity {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateUtils.checkUpdate(MainActivity.this, "http://www.rongzj.com/index_wx.php/App/version",
-                        1, "2", "c50bccef02f6265945a5202a2ebd2042", true, "test.apk");
+//                UpdateUtils.checkUpdate(MainActivity.this, "https://www.touzhejia.com/index_wx.php/App/version",
+//                        1, "1", "0972865f8d77d46a01397ff3ee50814d", true, "test.apk");
             }
         });
     }

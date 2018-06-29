@@ -7,10 +7,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -49,7 +51,7 @@ public class UpdateUtils {
         OkHttpUtils
                 .get()
                 .url(url)
-                .addParams("appid", appid)
+                .addParams("app_id", appid)
                 .addParams("at", at)
                 .addParams("os", "android")
                 .build()
@@ -63,19 +65,19 @@ public class UpdateUtils {
                     }
 
                     @Override
-                    public void onResponse(UpdateInfo response, int id) {
-                        if (response != null) {
-                            if (response.getR() == 1) {
-                                if (checkshouldDownload(response, versionCode)) {
-                                    UpdateFragment.newInstance(response, fileName).show(context.getSupportFragmentManager(), null);
+                    public void onResponse(UpdateInfo updateInfo, int id) {
+                        if (updateInfo != null) {
+                            if (updateInfo.getR() == 1) {
+                                if (checkshouldDownload(updateInfo, versionCode)) {
+                                    UpdateFragment.newInstance(updateInfo, fileName).show(context.getSupportFragmentManager(), null);
                                 } else {
                                     if (showToast) {
                                         Toast.makeText(context, "暂无更新~", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            } else if (TextUtils.isEmpty(response.getMsg())) {
+                            } else if (TextUtils.isEmpty(updateInfo.getMsg())) {
                                 if (showToast) {
-                                    Toast.makeText(context, response.getMsg(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, updateInfo.getMsg(), Toast.LENGTH_SHORT).show();
                                 }
                             } else {
                                 if (showToast) {
@@ -87,15 +89,15 @@ public class UpdateUtils {
                 });
     }
 
-    private static boolean checkshouldDownload(UpdateInfo response, int versionCode) {
+    private static boolean checkshouldDownload(UpdateInfo updateInfo, int versionCode) {
         try {
-            if (response.getItem() == null) {
+            if (updateInfo.getItem() == null) {
                 return false;
             }
 
-            if (!TextUtils.isEmpty(response.getItem().getVersion())) {
-                if (Integer.parseInt(response.getItem().getVersion()) > versionCode) {
-                    return !TextUtils.isEmpty(response.getItem().getDownloadUrl());
+            if (!TextUtils.isEmpty(updateInfo.getItem().getVersion())) {
+                if (Integer.parseInt(updateInfo.getItem().getVersion()) > versionCode) {
+                    return !TextUtils.isEmpty(updateInfo.getItem().getDownloadUrl());
                 } else {
                     return false;
                 }
@@ -111,8 +113,15 @@ public class UpdateUtils {
     static abstract class UpdateCallback extends Callback<UpdateInfo> {
         @Override
         public UpdateInfo parseNetworkResponse(Response response, int id) throws Exception {
-            String string = response.body().string();
-            UpdateInfo updateInfo = new Gson().fromJson(string, UpdateInfo.class);
+            UpdateInfo updateInfo = null;
+            try {
+                String string = response.body().string();
+                updateInfo = new Gson().fromJson(string, UpdateInfo.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
             return updateInfo;
         }
     }

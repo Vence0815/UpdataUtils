@@ -84,6 +84,10 @@ public class UpdateUtils {
                                     Toast.makeText(context, "暂无更新~", Toast.LENGTH_SHORT).show();
                                 }
                             }
+                        } else {
+                            if (showToast) {
+                                Toast.makeText(context, "暂无更新~", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

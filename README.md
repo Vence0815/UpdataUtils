@@ -5,7 +5,7 @@
 ## 使用步骤
 ### android studio导入
 
-`implementation 'com.github.Vence0815:UpdataUtils:v1.0-bate-3'`
+`implementation 'com.github.Vence0815:UpdataUtils:v1.0.0'`
 
 传入参数： Context，url(请求更新的接口)，当前版本号，appid，at，是否弹提示，下载文件名
 

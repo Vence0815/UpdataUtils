@@ -15,12 +15,12 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button btnTest = findViewById(R.id.btn_test);
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                UpdateUtils.checkUpdate(MainActivity.this, "https://www.touzhejia.com/index_wx.php/App/version",
-//                        1, "1", "0972865f8d77d46a01397ff3ee50814d", true, "test.apk");
-            }
-        });
+//        btnTest.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                UpdateUtils.checkUpdate(MainActivity.this, "http://demo3.renrunkeji.com:8083/index_wx.php/App/version",
+//                        1, "1", "a6c9d4e334e87b47dc326daf031ba44e", true, "test.apk");
+//            }
+//        });
     }
 }
